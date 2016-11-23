@@ -1,6 +1,6 @@
-#include"traffic.h"
+﻿#include"traffic.h"
 
-//��������ܵ���˸,���ɵ���֧�ɵ�
+//控制数码管的闪烁,主干道，支干道
 void ControlDigial(status mFlash, status bFlash) {
 	ShowDigital(weLockNum[0], mainRoad.shi, mFlash);
 	ShowDigital(weLockNum[1], mainRoad.ge, mFlash);
@@ -12,7 +12,7 @@ void Show() {
 	//OEE=0;
 	if (sec>3) {
 
-		if (mOrB) {//1Ϊ֧�ɵ�
+		if (mOrB) {//1为支干道
 			ShowLed(MR_BG, 0);
 		}
 		else {
@@ -56,18 +56,18 @@ void Show() {
 }
 
 void Init() {
-	//TMOD &= 0xF0;		//���ö�ʱ��ģʽ
+	//TMOD &= 0xF0;		//设置定时器模式
 	EA = 1;
 	TMOD &= 0xF0;
 	TMOD |= 0x01;
 	TL0 = 0x78;
 	TH0 = 0xEC;
-	TF0 = 0;		//���TF0��־
-	TR0 = 1;		//��ʱ��0��ʼ��ʱ
+	TF0 = 0;		//清除TF0标志
+	TR0 = 1;		//定时器0开始计时
 	ET0 = 1;
 
 	EX0 = 1;
-	TCON |= 0x01;//�ⲿ�ж�0
+	TCON |= 0x01;//外部中断0
 	OEE = 0;
 }
 
@@ -76,7 +76,7 @@ void main() {
 	Init();
 	while (true)
 	{
-		InitLed();//���Ƴ�ʼ��Ϊȫ��
+		InitLed();//将灯初始化为全灭
 		Show();
 	}
 

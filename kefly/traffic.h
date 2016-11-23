@@ -1,4 +1,4 @@
-#include<reg52.h>
+ï»¿#include<reg52.h>
 #include <intrins.h>
 
 #define nop()			_nop_()
@@ -7,10 +7,10 @@
 #define MMAXTIME		20
 #define BMAXTIME		15
 #define UCHAR			unsigned char
-#define MR_BG			0				//Ö÷ºì+Ö§ÂÌ
-#define MR_BY			1				//Ö÷ºì+Ö§»Æ
-#define MG_BR			2				//Ö÷ÂÌ+Ö§ºì
-#define MY_BR			3				//Ö÷»Æ+Ö§ºì
+#define MR_BG			0				//ä¸»çº¢+æ”¯ç»¿
+#define MR_BY			1				//ä¸»çº¢+æ”¯é»„
+#define MG_BR			2				//ä¸»ç»¿+æ”¯çº¢
+#define MY_BR			3				//ä¸»é»„+æ”¯çº¢
 #define status			unsigned char
 
 typedef struct {
@@ -34,7 +34,7 @@ sbit key = P3 ^ 2;
 sbit DS = P1 ^ 0;
 sbit SHCP = P1 ^ 1;
 sbit STCP = P1 ^ 2;
-sbit OEE = P1 ^ 3;//¿ØÖÆÉÁË¸
+sbit OEE = P1 ^ 3;//æ§åˆ¶é—ªçƒ
 sbit branchLedRed = P2 ^ 6;
 sbit branchLedYel = P2 ^ 5;
 sbit branchLedGre = P2 ^ 4;
@@ -42,20 +42,20 @@ sbit mainLedRed = P1 ^ 6;
 sbit mainLedYel = P1 ^ 5;
 sbit mainLedGre = P1 ^ 4;
 
-UCHAR mode = 0;//0Îª¶¼²»ÉÁ£»1ÊıÂë¹Ü²»É¾£»2¶¼ÉÁ
-UCHAR mOrB = 0;//0Ö÷¸ÉµÀ and  1Ö§¸ÉµÀ
-UCHAR sec2 = 20 - 3;//¿Û³ıÁË»ÆµÆ3Ãë
+UCHAR mode = 0;//0ä¸ºéƒ½ä¸é—ªï¼›1æ•°ç ç®¡ä¸åˆ ï¼›2éƒ½é—ª
+UCHAR mOrB = 0;//0ä¸»å¹²é“ and  1æ”¯å¹²é“
+UCHAR sec2 = 20 - 3;//æ‰£é™¤äº†é»„ç¯3ç§’
 UCHAR sec = 20;
 UCHAR tmp = 0;
 
 void InitLed();
 
-//*****************************************º¯Êı²¿·Ö************************************
-//ÔÚÄ³¸öÊıÂë¹ÜÏÔÊ¾Êı×Ö£¬Ñ¡Î»£¬ÏÔÊ¾Êı×Ö£¬ÊÇ·ñÉÁË¸
+//*****************************************å‡½æ•°éƒ¨åˆ†************************************
+//åœ¨æŸä¸ªæ•°ç ç®¡æ˜¾ç¤ºæ•°å­—ï¼Œé€‰ä½ï¼Œæ˜¾ç¤ºæ•°å­—ï¼Œæ˜¯å¦é—ªçƒ
 void ShowDigital(UCHAR weLock, UCHAR num, status flash) {
 	UCHAR temp = 0;
 	if (sec>3) {
-		if (mOrB)//ÕæÎªÖ§¸ÉµÀ
+		if (mOrB)//çœŸä¸ºæ”¯å¹²é“
 		{
 			branchRoad.ge = sec2 % 10;
 			branchRoad.shi = sec2 / 10;
@@ -70,7 +70,7 @@ void ShowDigital(UCHAR weLock, UCHAR num, status flash) {
 		}
 	}
 	else {
-		if (mOrB) {//ÕæÎªÖ§¸ÉµÀ
+		if (mOrB) {//çœŸä¸ºæ”¯å¹²é“
 			branchRoad.ge = sec % 10;
 			branchRoad.shi = sec / 10;
 			mainRoad.ge = sec % 10;
@@ -85,12 +85,12 @@ void ShowDigital(UCHAR weLock, UCHAR num, status flash) {
 	}
 
 
-	//*******************************************************Î»Ñ¡Ê®Î»******************************************************
+	//*******************************************************ä½é€‰åä½******************************************************
 
-	if (flash&&tmp<100)//ÉÁË¸,ÊıÂë¹Ü±ä»¯ÔÚÖ÷¸ÉµÀ£¬ÒªÇóÉÁË¸£¬Ç°°ëÃë£¨Ãğ£©
+	if (flash&&tmp<100)//é—ªçƒ,æ•°ç ç®¡å˜åŒ–åœ¨ä¸»å¹²é“ï¼Œè¦æ±‚é—ªçƒï¼Œå‰åŠç§’ï¼ˆç­ï¼‰
 	{
 		for (temp = 0; temp <= 7; temp++) {
-			if ((0x00 << temp) & 0x80) {// 0x80Ñ¡  0000 0000
+			if ((0x00 << temp) & 0x80) {// 0x80é€‰  0000 0000
 				DS = 1;
 			}
 			else {
@@ -118,7 +118,7 @@ void ShowDigital(UCHAR weLock, UCHAR num, status flash) {
 			SHCP = 1;
 		}
 	}
-	//***************¶ÎÑ¡****************
+	//***************æ®µé€‰****************
 	for (temp = 0; temp <= 7; temp++) {
 		if ((digital[num] << temp) & 0x80) {
 			DS = 1;
@@ -137,7 +137,7 @@ void ShowDigital(UCHAR weLock, UCHAR num, status flash) {
 	STCP = 1;
 }
 
-//ÏÔÊ¾ºìÂÌµÆ£¬×Ü¹²ÓĞ3×ÜÄ£Ê½£¬flash ¿ØÖÆÉÁË¸
+//æ˜¾ç¤ºçº¢ç»¿ç¯ï¼Œæ€»å…±æœ‰3æ€»æ¨¡å¼ï¼Œflash æ§åˆ¶é—ªçƒ
 void ShowLed(UCHAR mode, status flash) {
 	switch (mode)
 	{
@@ -186,7 +186,7 @@ void ShowLed(UCHAR mode, status flash) {
 
 
 
-//³õÊ¼»¯LedµÆ£¬ÖØÖÃÎª³õÊ¼×´Ì¬£¬È«Ãğ
+//åˆå§‹åŒ–Ledç¯ï¼Œé‡ç½®ä¸ºåˆå§‹çŠ¶æ€ï¼Œå…¨ç­
 void InitLed() {
 	branchLedRed = 1;
 	branchLedYel = 1;
@@ -196,19 +196,19 @@ void InitLed() {
 	mainLedGre = 1;
 }
 
-//¶¨Ê±Æ÷0
+//å®šæ—¶å™¨0
 void T0_time() interrupt 1{
 	TL0 = 0x78;
 	TH0 = 0xEC;
-	TF0 = 0;		//Çå³ıTF0±êÖ¾
+	TF0 = 0;		//æ¸…é™¤TF0æ ‡å¿—
 	tmp++;
 	if (tmp >= 200) {
 		tmp = 0;
 		sec--;
 		sec2--;
 		if (!(sec + 1)) {
-			mOrB = ~mOrB;//Á½Â·µÄÊıÂë¹Ü±ä»¯×ª»¯
-			if (mOrB) {//ÅĞ¶¨ÎªÖ§Â·Ê±¼ä
+			mOrB = ~mOrB;//ä¸¤è·¯çš„æ•°ç ç®¡å˜åŒ–è½¬åŒ–
+			if (mOrB) {//åˆ¤å®šä¸ºæ”¯è·¯æ—¶é—´
 				sec = BMAXTIME;
 				sec2 = BMAXTIME - 3;
 			}
@@ -220,9 +220,9 @@ void T0_time() interrupt 1{
 	}
 }
 
-//Íâ²¿ÖĞ¶Ï
+//å¤–éƒ¨ä¸­æ–­
 void INIT_key() interrupt 0{
 	mode++;
 	mode %= 3;
-	IE0 = 0;//Èí¼şÇåÁã
+	IE0 = 0;//è½¯ä»¶æ¸…é›¶
 }
